@@ -6,7 +6,7 @@ import { selectedWorkItems } from "./work-items";
 export const metadata: Metadata = {
   title: "Research & technical work",
   description:
-    "Tim Chao is a Northwestern undergraduate pursuing a combined B.S./M.S. in Electrical Engineering and Mathematics and researching photonic systems.",
+    "Tim Chao is a Northwestern undergraduate in a combined B.S./M.S. program (B.S. in Electrical Engineering and Mathematics, M.S. in Electrical Engineering) researching photonic systems.",
   alternates: { canonical: "/" },
 };
 
@@ -32,6 +32,13 @@ const socialProfiles = [
     icon: "google-scholar",
     rel: "me",
   },
+  {
+    label: "X",
+    accessibleLabel: "Tim Chao on X",
+    href: "https://x.com/chaotycc",
+    icon: "x",
+    rel: "me",
+  },
 ] as const;
 
 const deliberateOcclusionPdf =
@@ -47,13 +54,20 @@ export default function Home() {
           <h1>Tim Chao</h1>
           <p className="page-intro-lede">
             I am an undergraduate student at Northwestern University pursuing a
-            combined B.S./M.S. degree in Electrical Engineering and Mathematics,
-            expected to graduate in 2028. At Northwestern’s Center for Photonic
+            combined B.S./M.S. degree: a B.S. in Electrical Engineering and
+            Mathematics, expected in 2027, and an M.S. in Electrical
+            Engineering, expected in 2028. At Northwestern’s Center for Photonic
             Communication and Computing, I conduct research on fiber-optic
-            networks under the supervision of Professor Prem Kumar. I also
-            participate in developing and simulating photonic-native algorithms
-            for an ARPA-E project at MITRE focused on energy-efficient AI using
-            photonic integrated circuits.
+            networks under the supervision of Professor Prem Kumar. As a quantum
+            photonics research intern at MITRE Labs, I also participate in
+            developing and simulating photonic-native algorithms for an ARPA-E
+            project focused on energy-efficient AI using photonic integrated
+            circuits.
+          </p>
+          <p className="page-intro-lede">
+            Outside of research, I build software, including Enkhora, an
+            inference system for idle GPU capacity on shared clusters, and
+            Helix, an open-source AI tutor.
           </p>
           <p className="home-location">Evanston, Illinois</p>
           <ul className="profile-links" aria-label="Professional profiles">
@@ -75,9 +89,9 @@ export default function Home() {
           </ul>
         </PageIntro>
 
-        <section className="home-section" aria-labelledby="selected-work-title">
+        <section className="home-section" aria-labelledby="projects-title">
           <div className="home-section-heading">
-            <h2 id="selected-work-title">Selected Work</h2>
+            <h2 id="projects-title">Projects</h2>
             <Link href="/work">All Work</Link>
           </div>
 
@@ -96,6 +110,25 @@ export default function Home() {
           <div className="entry-list">
             <article className="entry-row publication-entry">
               <h3>
+                <a href="/papers/real-time-polarization-stabilization.pdf">
+                  Real-Time Polarization Stabilization{" "}
+                  <span className="link-label">(PDF)</span>
+                </a>
+              </h3>
+              <p>
+                Physics-informed sequence modeling for real-time polarization
+                stabilization in quantum networks, with 11× fewer parameters and
+                7.2× faster inference than a transformer baseline at matching
+                accuracy.
+              </p>
+              <p className="entry-meta">
+                Conference paper · FiO LS 2026 · Emil Wolf Outstanding Student
+                Paper Award
+              </p>
+            </article>
+
+            <article className="entry-row publication-entry">
+              <h3>
                 <a href={deliberateOcclusionPdf}>
                   Deliberate Occlusion: Asymmetry in Facial Expression{" "}
                   <span className="link-label">(PDF)</span>
@@ -107,20 +140,6 @@ export default function Home() {
                 Invention, pp. 338–341.
               </p>
               <p className="entry-meta">Conference paper · ICKII 2023</p>
-            </article>
-
-            <article className="entry-row publication-entry">
-              <h3>
-                <a href="/papers/real-time-polarization-stabilization.pdf">
-                  Real-Time Polarization Stabilization{" "}
-                  <span className="link-label">(PDF)</span>
-                </a>
-              </h3>
-              <p>
-                Physics-informed sequence modeling for real-time polarization
-                stabilization in quantum networks.
-              </p>
-              <p className="entry-meta">Conference paper · FIO LS 2026</p>
             </article>
           </div>
         </section>

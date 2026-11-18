@@ -71,11 +71,13 @@ export default function RootLayout({
       "Photonics",
       "Quantum communications",
       "Differentiable simulation",
+      "Distributed inference",
     ],
     sameAs: [
       "https://github.com/chaotyc",
       "https://www.linkedin.com/in/y-cchao",
       "https://scholar.google.com/citations?user=KEgyxv4AAAAJ",
+      "https://x.com/chaotycc",
     ],
   };
 

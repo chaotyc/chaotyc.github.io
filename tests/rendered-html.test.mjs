@@ -31,38 +31,32 @@ test("exports the simplified homepage", async () => {
   assert.match(html, /<h1>Tim Chao<\/h1>/i);
   assert.doesNotMatch(html, /Hi, I(?:&apos;|&#x27;|')?m/i);
   assert.doesNotMatch(html, /Electrical engineering \+ mathematics/i);
-  assert.match(html, /pursuing a combined B\.S\.\/M\.S\. degree/i);
+  assert.match(html, /pursuing a\s+combined B\.S\.\/M\.S\. degree/i);
+  assert.match(html, /Mathematics, expected in 2027/i);
+  assert.match(html, /Engineering, expected in 2028/i);
   assert.match(html, /Center for Photonic Communication and Computing/i);
   assert.match(html, /supervision of Professor Prem Kumar/i);
-  assert.match(html, /ARPA-E project at MITRE/i);
+  assert.match(html, /quantum photonics research intern at MITRE Labs/i);
+  assert.match(html, /ARPA-E project/i);
   assert.match(html, /energy-efficient AI using photonic integrated circuits/i);
   assert.match(html, />Real-Time Polarization Stabilization\s*</);
-  assert.match(html, /Conference paper\s*·\s*FIO LS 2026/i);
-  assert.match(
-    html,
-    />Optical-Native Computing and Differentiable Photonic Simulation</,
-  );
-  assert.match(html, />PyPCL: Learning with Ambiguous Labels/);
-  assert.match(
-    html,
-    /with projected results kept distinct from measured hardware performance/i,
-  );
-  assert.match(
-    html,
-    /comparing partial-label and complementary-label learning methods/i,
-  );
+  assert.match(html, /Conference paper\s*·\s*FiO LS 2026/);
+  assert.match(html, /Emil Wolf Outstanding Student\s+Paper Award/i);
   assert.match(html, />Publications<\/h2>/i);
   assert.doesNotMatch(html, /Publications\s*(?:&amp;|&)\s*talks/i);
 
-  const selectedWorkStart = html.indexOf('id="selected-work-title"');
+  assert.match(html, /<h2 id="projects-title">Projects<\/h2>/);
+  assert.doesNotMatch(html, />Selected Work</);
+  const selectedWorkStart = html.indexOf('id="projects-title"');
   const publicationsStart = html.indexOf('id="publications-title"');
   assert.ok(selectedWorkStart >= 0 && publicationsStart > selectedWorkStart);
   const selectedWorkHtml = html.slice(selectedWorkStart, publicationsStart);
   assert.doesNotMatch(selectedWorkHtml, /Real-time polarization/i);
-  assert.match(
-    selectedWorkHtml,
-    /href="https:\/\/github\.com\/chaotyc\/PyPCL"/i,
-  );
+  assert.match(selectedWorkHtml, /href="https:\/\/enkhora\.ai\/"/i);
+  assert.match(selectedWorkHtml, /href="https:\/\/github\.com\/chaotyc\/Helix"/i);
+  assert.match(selectedWorkHtml, /src="\/work\/enkhora\.webp"/i);
+  assert.match(selectedWorkHtml, /src="\/work\/helix\.webp"/i);
+  assert.doesNotMatch(selectedWorkHtml, /PyPCL|Optical-Native/i);
 
   assert.match(html, /aria-label="Professional profiles"/i);
   assert.match(
@@ -79,7 +73,8 @@ test("exports the simplified homepage", async () => {
     html,
     /href="https:\/\/scholar\.google\.com\/citations\?user=KEgyxv4AAAAJ"/i,
   );
-  for (const icon of ["github", "linkedin", "google-scholar"]) {
+  assert.match(html, /href="https:\/\/x\.com\/chaotycc"/i);
+  for (const icon of ["github", "linkedin", "google-scholar", "x"]) {
     assert.match(html, new RegExp(`profile-icon-${icon}`, "i"));
   }
   assert.match(html, /href="\/papers\/real-time-polarization-stabilization\.pdf"/i);
@@ -103,7 +98,7 @@ test("exports one flat work list with direct PDF and repository links", async ()
   const html = await exportedHtml("/work");
 
   assert.equal((html.match(/<section\b/gi) ?? []).length, 1);
-  assert.match(html, />Selected Work<\/h2>/);
+  assert.match(html, />All Work<\/h2>/);
   assert.match(
     html,
     /Real-Time Polarization Stabilization of Optical Signals in Quantum Networks via Physics-Informed Sequence Modeling/,
@@ -116,26 +111,50 @@ test("exports one flat work list with direct PDF and repository links", async ()
   assert.match(html, /Deliberate Occlusion: Asymmetry in Facial Expression/);
   assert.match(html, /href="\/papers\/real-time-polarization-stabilization\.pdf"/i);
   assert.match(html, /Deliberate-Occlusion-Asymmetry-in-Facial-Expression\.pdf/i);
-  assert.match(html, /id="optical-native-computing"/i);
-  assert.match(html, /id="pypcl"/i);
+  for (const id of [
+    "enkhora",
+    "helix",
+    "polarization-tracking",
+    "optical-native-computing",
+    "pypcl",
+    "deliberate-occlusion",
+  ]) {
+    assert.match(html, new RegExp(`id="${id}"`, "i"));
+  }
+  assert.equal((html.match(/class="work-entry-image"/g) ?? []).length, 6);
+  for (const [id, file] of [
+    ["enkhora", "enkhora.webp"],
+    ["helix", "helix.webp"],
+    ["polarization-tracking", "polarization-tracking.webp"],
+    ["optical-native-computing", "optical-native-computing.svg"],
+    ["pypcl", "pypcl.svg"],
+    ["deliberate-occlusion", "deliberate-occlusion.webp"],
+  ]) {
+    const start = html.indexOf(`id="${id}"`);
+    const end = html.indexOf("</article>", start);
+    assert.ok(start >= 0 && end > start, id);
+    assert.match(html.slice(start, end), new RegExp(`src="/work/${file.replace(".", "\\.")}"`), id);
+    await access(new URL(`work/${file}`, exportRoot));
+  }
   assert.match(html, /href="https:\/\/github\.com\/chaotyc\/PyPCL"/i);
-  assert.match(html, /Conference paper\s*·\s*FIO LS 2026/i);
+  assert.match(html, /Conference paper\s*·\s*FiO LS 2026/);
   assert.doesNotMatch(html, /Research paper\s*·\s*FIO 2026/i);
   assert.doesNotMatch(html, /href="\/work\//i);
   assert.doesNotMatch(html, /class="tag"|>#/i);
-  assert.equal((html.match(/class="work-entry"/g) ?? []).length, 4);
+  assert.equal((html.match(/class="work-entry"/g) ?? []).length, 6);
 });
 
 test("exports the simplified About page", async () => {
   const html = await exportedHtml("/about");
 
-  for (const skill of ["Python", "PyTorch", "NumPy", "Qiskit", "LaTeX", "Markdown"]) {
+  for (const skill of ["Python", "PyTorch", "NumPy", "Qiskit", "CUDA", "vLLM"]) {
     assert.match(html, new RegExp(`>${skill}<`, "i"));
   }
   assert.match(html, />Skills<\/h2>/);
   assert.doesNotMatch(html, />Tools<\/h2>/);
-  assert.equal((html.match(/class="skill-item"/g) ?? []).length, 10);
+  assert.equal((html.match(/class="skill-item"/g) ?? []).length, 13);
   assert.match(html, /grew up in Seattle, Beijing, and Taipei/i);
+  assert.match(html, /Northwestern University in Evanston/i);
   assert.match(html, /competitive mathematics and programming/i);
   assert.match(html, /basketball has been a constant in my life/i);
   assert.match(html, /building custom mechanical keyboards/i);
@@ -191,7 +210,7 @@ test("exports a restrained text-only 404 page", async () => {
   assert.doesNotMatch(html, /button-link|not in the notebook/i);
 });
 
-test("includes the verified FIO LS 2026 conference paper PDF", async () => {
+test("includes the verified FiO LS 2026 conference paper PDF", async () => {
   const pdf = await readFile(
     new URL("papers/real-time-polarization-stabilization.pdf", exportRoot),
   );
@@ -199,7 +218,7 @@ test("includes the verified FIO LS 2026 conference paper PDF", async () => {
 });
 
 test("exports the vendored social and theme icons", async () => {
-  for (const icon of ["github", "linkedin", "google-scholar", "moon", "sun"]) {
+  for (const icon of ["github", "linkedin", "google-scholar", "x", "moon", "sun"]) {
     const svg = await readFile(
       new URL(`icons/${icon}.svg`, exportRoot),
       "utf8",
@@ -247,7 +266,7 @@ test("uses the same work-entry typography on Home and Work", async () => {
   const homeHtml = await exportedHtml("/");
   const workHtml = await exportedHtml("/work");
   assert.equal((homeHtml.match(/class="work-entry"/g) ?? []).length, 2);
-  assert.equal((workHtml.match(/class="work-entry"/g) ?? []).length, 4);
+  assert.equal((workHtml.match(/class="work-entry"/g) ?? []).length, 6);
 
   const css = await readFile(
     new URL("../app/globals.css", import.meta.url),
@@ -255,6 +274,19 @@ test("uses the same work-entry typography on Home and Work", async () => {
   );
   assert.match(css, /--font-size-entry-title:\s*1\.15rem/);
   assert.match(css, /--font-weight-entry:\s*600/);
+});
+
+test("exports a thumbnail for every work entry", async () => {
+  for (const file of [
+    "enkhora.webp",
+    "helix.webp",
+    "polarization-tracking.webp",
+    "optical-native-computing.svg",
+    "pypcl.svg",
+    "deliberate-occlusion.webp",
+  ]) {
+    await access(new URL(`work/${file}`, exportRoot));
+  }
 });
 
 test("includes the approved public résumé PDF", async () => {

@@ -4,8 +4,8 @@ A content-first personal portfolio for Tim Chao's research, software, publicatio
 
 ## Site map
 
-- `/` — single-column homepage with selected work and publications
-- `/work` — one text-first list of research, software, and publications
+- `/` — single-column homepage with projects and publications
+- `/work` — one list of research, software, and publications, each with a thumbnail from `public/work/`
 - `/about` — background, current interests, tools, and personal details
 - `/tim-chao-resume.pdf` — current résumé, linked directly from the global navigation
 

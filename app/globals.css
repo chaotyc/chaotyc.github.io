@@ -1813,6 +1813,11 @@ a:hover {
   mask-image: url("/icons/google-scholar.svg");
 }
 
+.profile-icon-x {
+  -webkit-mask-image: url("/icons/x.svg");
+  mask-image: url("/icons/x.svg");
+}
+
 .home-section {
   margin-bottom: clamp(62px, 9vw, 86px);
 }
@@ -1899,6 +1904,44 @@ a:hover {
 
 .work-entry:last-child {
   border-bottom: 0;
+}
+
+.work-entry:has(> .work-entry-image) {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.work-entry-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  margin-top: 4px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--figure);
+}
+
+:root[data-theme="dark"] .work-entry-image {
+  filter: brightness(0.88);
+}
+
+.work-entry-body > :last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 560px) {
+  .work-entry:has(> .work-entry-image) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .work-entry-image {
+    margin-top: 0;
+  }
 }
 
 .work-entry-title {

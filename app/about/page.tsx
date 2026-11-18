@@ -11,14 +11,17 @@ export const metadata: Metadata = {
 const skills = [
   "Python",
   "C++",
+  "CUDA",
+  "TypeScript",
   "PyTorch",
   "NumPy",
+  "Pandas",
   "TensorFlow",
   "Qiskit",
   "Assembly",
   "Verilog",
+  "vLLM",
   "LaTeX",
-  "Markdown",
 ];
 
 export default function AboutPage() {
@@ -30,7 +33,8 @@ export default function AboutPage() {
           <h1>About Me</h1>
           <p className="page-intro-lede">
             I grew up in Seattle, Beijing, and Taipei and now study electrical
-            engineering and mathematics at Northwestern University in Chicago.
+            engineering and mathematics at Northwestern University in Evanston,
+            just outside Chicago.
           </p>
         </PageIntro>
 

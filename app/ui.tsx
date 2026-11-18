@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ThemeToggle } from "./theme-toggle";
+import type { WorkItem } from "./work-items";
 
 export function Wordmark() {
   return (
@@ -70,28 +71,37 @@ export function WorkEntry({
   meta,
   href,
   linkLabel,
-}: {
-  id?: string;
-  title: string;
-  summary: string;
-  meta: string;
-  href?: string;
-  linkLabel?: string;
-}) {
+  image,
+}: WorkItem) {
   return (
     <article className="work-entry" id={id}>
-      <h3 className="work-entry-title">
-        {href ? (
-          <a href={href}>
-            {title}{" "}
-            {linkLabel ? <span className="link-label">({linkLabel})</span> : null}
-          </a>
-        ) : (
-          title
-        )}
-      </h3>
-      <p className="work-entry-summary">{summary}</p>
-      <p className="work-entry-meta">{meta}</p>
+      {image ? (
+        // Static export: thumbnails are pre-sized in public/work, so no image loader is needed.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          className="work-entry-image"
+          src={image.src}
+          alt={image.alt}
+          width={960}
+          height={600}
+          loading="lazy"
+          decoding="async"
+        />
+      ) : null}
+      <div className="work-entry-body">
+        <h3 className="work-entry-title">
+          {href ? (
+            <a href={href}>
+              {title}{" "}
+              {linkLabel ? <span className="link-label">({linkLabel})</span> : null}
+            </a>
+          ) : (
+            title
+          )}
+        </h3>
+        <p className="work-entry-summary">{summary}</p>
+        <p className="work-entry-meta">{meta}</p>
+      </div>
     </article>
   );
 }

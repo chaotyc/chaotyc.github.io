@@ -22,8 +22,8 @@ export default function WorkPage() {
           </p>
         </PageIntro>
 
-        <section className="archive-group" aria-labelledby="selected-work">
-          <h2 id="selected-work">Selected Work</h2>
+        <section className="archive-group" aria-labelledby="all-work">
+          <h2 id="all-work">All Work</h2>
           <div className="work-entry-list">
             {workItems.map((item) => (
               <WorkEntry key={item.id} {...item} />
